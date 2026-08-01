@@ -1,0 +1,49 @@
+name: AWS Cloud Security Scan
+
+on:
+  schedule:
+    # Run automatically every day at 3:30 AM UTC
+    - cron: '30 3 * * *'
+  workflow_dispatch: # Allows manual trigger from the GitHub UI
+
+permissions:
+  id-token: write # Required for AWS OIDC authentication
+  contents: read
+
+env:
+  AWS_REGION: "ap-south-1"
+
+jobs:
+  security-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials via OIDC
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          # IMPORTANT: Replace with your actual AWS IAM Role ARN configured for GitHub OIDC
+          role-to-assume: arn:aws:iam::036558359478:role/GitHubActionsSecurityScanRole
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run AWS Security Scan & Auto-Remediate
+        run: |
+          python main.py --auto-remediate
+
+      - name: Upload HTML Report as Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Cloud-Security-Report
+          path: reports/*.html
+          retention-days: 7

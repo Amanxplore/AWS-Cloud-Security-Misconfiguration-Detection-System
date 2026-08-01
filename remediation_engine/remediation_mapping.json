@@ -1,0 +1,190 @@
+{
+  "schema_version": "1.0",
+  "description": "Knowledge base mapping AWS misconfigurations to remediation recommendations. Each entry has a stable 'id' meant to be used as the integration key by the AWS Scanner module (Member 1) and the Risk Scoring Engine (Member 2). 'aliases' allow matching against free-text misconfiguration strings if a scanner does not yet emit the standard id.",
+  "mappings": [
+    {
+      "id": "IAM_ADMIN_POLICY_ATTACHED",
+      "service": "IAM",
+      "misconfiguration": "User has AdministratorAccess policy",
+      "aliases": ["AdministratorAccess policy attached", "Excessive IAM permissions", "User has full admin access", "Admin policy attached broadly"],
+      "severity": "Critical",
+      "recommendation": "Apply the Principle of Least Privilege. Replace AdministratorAccess with a custom policy containing only required permissions.",
+      "remediation_steps": [
+        "Identify the actual permissions the user/role needs from CloudTrail activity.",
+        "Create a custom-scoped IAM policy covering only those permissions.",
+        "Detach AdministratorAccess and attach the custom policy.",
+        "Re-test the workflow to confirm nothing breaks."
+      ]
+    },
+    {
+      "id": "IAM_ROOT_ACCOUNT_USED",
+      "service": "IAM",
+      "misconfiguration": "Root account is actively used",
+      "aliases": ["Root account usage detected", "Root user activity"],
+      "severity": "Critical",
+      "recommendation": "Avoid daily use of the root account. Create IAM users with administrative privileges and enable MFA on the root account.",
+      "remediation_steps": [
+        "Create a named IAM admin user/role for daily operations.",
+        "Enable hardware or virtual MFA on the root account.",
+        "Store root credentials securely and use only for account-level tasks.",
+        "Set up a CloudWatch alarm for root login events."
+      ]
+    },
+    {
+      "id": "IAM_MFA_NOT_ENABLED",
+      "service": "IAM",
+      "misconfiguration": "MFA not enabled",
+      "aliases": ["Missing Multi-Factor Authentication (MFA)", "MFA disabled for user"],
+      "severity": "High",
+      "recommendation": "Enable Multi-Factor Authentication (MFA) for all privileged users.",
+      "remediation_steps": [
+        "Identify all IAM users without MFA enabled.",
+        "Enroll each user in virtual or hardware MFA.",
+        "Enforce MFA via IAM policy conditions for sensitive actions."
+      ]
+    },
+    {
+      "id": "IAM_UNUSED_ACCESS_KEYS",
+      "service": "IAM",
+      "misconfiguration": "Unused access keys",
+      "aliases": ["Unused IAM users/keys", "Stale access key detected"],
+      "severity": "Medium",
+      "recommendation": "Delete or deactivate unused access keys older than 90 days.",
+      "remediation_steps": [
+        "Run IAM credential report to find last-used dates.",
+        "Deactivate keys unused for 90+ days.",
+        "Delete keys after confirming no dependent workloads."
+      ]
+    },
+    {
+      "id": "IAM_WEAK_PASSWORD_POLICY",
+      "service": "IAM",
+      "misconfiguration": "Password policy is weak",
+      "aliases": ["Weak IAM password policy", "Password policy weaknesses"],
+      "severity": "High",
+      "recommendation": "Configure a strong password policy with minimum length, complexity, and expiration.",
+      "remediation_steps": [
+        "Set minimum password length to 14+ characters.",
+        "Require uppercase, lowercase, number, and symbol.",
+        "Set password expiration and prevent reuse of last 5 passwords."
+      ]
+    },
+    {
+      "id": "S3_PUBLIC_BUCKET",
+      "service": "S3",
+      "misconfiguration": "Public bucket",
+      "aliases": ["Bucket is Public", "Public S3 buckets", "S3 bucket publicly accessible", "Block Public Access disabled"],
+      "severity": "Critical",
+      "recommendation": "Enable Block Public Access and remove unnecessary public bucket policies.",
+      "remediation_steps": [
+        "Enable S3 Block Public Access at the bucket and account level.",
+        "Review and remove overly permissive bucket policies and ACLs.",
+        "Grant access only to specific authorized IAM roles."
+      ]
+    },
+    {
+      "id": "S3_ENCRYPTION_DISABLED",
+      "service": "S3",
+      "misconfiguration": "Bucket encryption disabled",
+      "aliases": ["S3 encryption not enabled", "Unencrypted object uploads allowed"],
+      "severity": "High",
+      "recommendation": "Enable Server-Side Encryption (SSE-S3 or SSE-KMS).",
+      "remediation_steps": [
+        "Enable default encryption on the bucket (SSE-S3 or SSE-KMS).",
+        "For sensitive data, prefer SSE-KMS with a customer-managed key.",
+        "Enforce encryption via bucket policy (deny unencrypted PutObject)."
+      ]
+    },
+    {
+      "id": "S3_VERSIONING_DISABLED",
+      "service": "S3",
+      "misconfiguration": "Versioning disabled",
+      "aliases": ["S3 bucket versioning not enabled"],
+      "severity": "Medium",
+      "recommendation": "Enable versioning to protect against accidental deletion and ransomware.",
+      "remediation_steps": [
+        "Enable versioning on the bucket.",
+        "Configure lifecycle rules to manage old versions and storage cost.",
+        "Consider enabling MFA Delete for critical buckets."
+      ]
+    },
+    {
+      "id": "S3_LOGGING_DISABLED",
+      "service": "S3",
+      "misconfiguration": "Logging disabled",
+      "aliases": ["S3 access logging disabled", "No logging enabled"],
+      "severity": "Medium",
+      "recommendation": "Enable S3 Access Logging or CloudTrail logging.",
+      "remediation_steps": [
+        "Enable S3 server access logging to a dedicated logging bucket.",
+        "Alternatively/additionally enable CloudTrail data events for the bucket.",
+        "Set retention and monitoring on the log bucket."
+      ]
+    },
+    {
+      "id": "EC2_SSH_OPEN_TO_WORLD",
+      "service": "EC2",
+      "misconfiguration": "Security Group allows SSH (22) from 0.0.0.0/0",
+      "aliases": ["Open EC2 security groups", "SSH Open to Internet", "Security group allows SSH from anywhere", "SSH open to the world"],
+      "severity": "High",
+      "recommendation": "Restrict SSH access to trusted IP addresses or use a Bastion Host.",
+      "remediation_steps": [
+        "Identify the security group rule allowing 0.0.0.0/0 on port 22.",
+        "Restrict the source to known/trusted IP ranges or a VPN CIDR.",
+        "Consider routing SSH access through a Bastion Host or Session Manager instead."
+      ]
+    },
+    {
+      "id": "EC2_RDP_OPEN_TO_WORLD",
+      "service": "EC2",
+      "misconfiguration": "Security Group allows RDP (3389) from 0.0.0.0/0",
+      "aliases": ["RDP Open to Internet", "Security group allows RDP from anywhere"],
+      "severity": "High",
+      "recommendation": "Restrict RDP access to authorized IP ranges only.",
+      "remediation_steps": [
+        "Identify the security group rule allowing 0.0.0.0/0 on port 3389.",
+        "Restrict the source to authorized corporate/VPN IP ranges.",
+        "Consider using AWS Systems Manager Session Manager instead of RDP."
+      ]
+    },
+    {
+      "id": "EC2_MONITORING_DISABLED",
+      "service": "EC2",
+      "misconfiguration": "Instance not monitored",
+      "aliases": ["EC2 monitoring disabled", "CloudWatch monitoring not enabled"],
+      "severity": "Medium",
+      "recommendation": "Enable Amazon CloudWatch monitoring.",
+      "remediation_steps": [
+        "Enable detailed CloudWatch monitoring on the instance.",
+        "Set up alarms for CPU, memory (via agent), disk, and network anomalies.",
+        "Forward relevant logs to CloudWatch Logs."
+      ]
+    },
+    {
+      "id": "EC2_EBS_UNENCRYPTED",
+      "service": "EC2",
+      "misconfiguration": "EBS volumes unencrypted",
+      "aliases": ["Unencrypted EBS volume"],
+      "severity": "High",
+      "recommendation": "Enable EBS encryption using AWS KMS keys.",
+      "remediation_steps": [
+        "Enable EBS encryption by default at the account/region level.",
+        "Snapshot existing unencrypted volumes and create encrypted copies.",
+        "Replace unencrypted volumes with the encrypted copies."
+      ]
+    },
+    {
+      "id": "EC2_IMDSV1_ENABLED",
+      "service": "EC2",
+      "misconfiguration": "IMDSv1 enabled",
+      "aliases": ["Instance Metadata Service v1 enabled"],
+      "severity": "Medium",
+      "recommendation": "Upgrade to Instance Metadata Service Version 2 (IMDSv2).",
+      "remediation_steps": [
+        "Set the instance metadata options to require IMDSv2 (HttpTokens=required).",
+        "Update any application code/SDKs that assume IMDSv1 behavior.",
+        "Apply the setting account-wide for new instances via launch templates."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Cloud Security Assessment Report</title>
+<style>
+  body {
+    font-family: -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    background: #f5f6f8;
+    color: #1a1a1a;
+    margin: 0;
+    padding: 32px;
+  }
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 32px 40px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  }
+  h1 {
+    color: #1F3864;
+    text-align: center;
+    margin-bottom: 4px;
+  }
+  .subtitle {
+    text-align: center;
+    color: #666;
+    margin-bottom: 28px;
+    font-size: 14px;
+  }
+  table.info {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 28px;
+  }
+  table.info td {
+    border: 1px solid #ddd;
+    padding: 8px 12px;
+    font-size: 14px;
+  }
+  table.info td.label {
+    background: #EDEDED;
+    font-weight: 600;
+    width: 200px;
+  }
+  .summary {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+  .badge {
+    flex: 1;
+    text-align: center;
+    padding: 16px 8px;
+    border-radius: 6px;
+    color: white;
+  }
+  .badge .count {
+    font-size: 28px;
+    font-weight: 700;
+    display: block;
+  }
+  .badge .label {
+    font-size: 12px;
+    letter-spacing: 0.05em;
+  }
+  h2.section-title {
+    color: #1F3864;
+    border-bottom: 2px solid #1F3864;
+    padding-bottom: 6px;
+    margin-top: 36px;
+  }
+  .finding {
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    overflow: hidden;
+  }
+  .finding-header {
+    padding: 12px 16px;
+    color: white;
+    font-weight: 700;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .finding-body {
+    padding: 16px;
+  }
+  .finding-body table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 14px;
+  }
+  .finding-body table td {
+    border: 1px solid #eee;
+    padding: 6px 10px;
+    font-size: 14px;
+  }
+  .finding-body table td.label {
+    background: #f7f7f7;
+    font-weight: 600;
+    width: 160px;
+  }
+  .finding-body ul {
+    margin: 6px 0 0 0;
+    padding-left: 20px;
+  }
+  .finding-body li {
+    margin-bottom: 4px;
+    font-size: 14px;
+  }
+  .not-found {
+    background: #f7f7f7;
+    color: #888;
+    font-style: italic;
+    font-size: 13px;
+  }
+  .footer {
+    text-align: center;
+    color: #999;
+    margin-top: 32px;
+    border-top: 1px solid #ccc;
+    padding-top: 12px;
+    font-size: 13px;
+    letter-spacing: 0.05em;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Cloud Security Assessment Report</h1>
+  <div class="subtitle">Generated: 2026-07-15 04:09 UTC</div>
+
+  <table class="info">
+    <tr><td class="label">Scan ID</td><td>SCAN-001</td></tr>
+    <tr><td class="label">Scan Date</td><td>2026-07-02T14:30:00Z</td></tr>
+    <tr><td class="label">AWS Account</td><td>123456789012</td></tr>
+    <tr><td class="label">Region</td><td>ap-south-1</td></tr>
+  </table>
+
+  <h2 class="section-title">Summary</h2>
+  <div class="summary">
+    <div class="badge" style="background:#C00000;"><span class="count">2</span><span class="label">CRITICAL</span></div><div class="badge" style="background:#E36C09;"><span class="count">2</span><span class="label">HIGH</span></div><div class="badge" style="background:#BF8F00;"><span class="count">2</span><span class="label">MEDIUM</span></div><div class="badge" style="background:#375623;"><span class="count">1</span><span class="label">LOW</span></div>
+  </div>
+
+  <h2 class="section-title">Findings</h2>
+  
+  <div class="finding">
+    <div class="finding-header" style="background:#C00000;">
+      <span>Finding #1 &middot; S3</span>
+      <span>CRITICAL &middot; Risk 95</span>
+    </div>
+    <div class="finding-body">
+      <table>
+        <tr><td class="label">Resource</td><td>company-backup-bucket</td></tr>
+        <tr><td class="label">Issue</td><td>Public Bucket</td></tr>
+        <tr><td class="label">Status</td><td>Open</td></tr>
+      </table>
+      <strong>Recommendation</strong>
+      <p>Enable Block Public Access and remove unnecessary public bucket policies.</p>
+      <strong>Remediation Steps</strong><ul><li>Enable S3 Block Public Access at the bucket and account level.</li><li>Review and remove overly permissive bucket policies and ACLs.</li><li>Grant access only to specific authorized IAM roles.</li></ul>
+    </div>
+  </div>
+
+  <div class="finding">
+    <div class="finding-header" style="background:#E36C09;">
+      <span>Finding #2 &middot; EC2</span>
+      <span>HIGH &middot; Risk 82</span>
+    </div>
+    <div class="finding-body">
+      <table>
+        <tr><td class="label">Resource</td><td>SecurityGroup-WebServer</td></tr>
+        <tr><td class="label">Issue</td><td>Security Group allows SSH (22) from 0.0.0.0/0</td></tr>
+        <tr><td class="label">Status</td><td>Open</td></tr>
+      </table>
+      <strong>Recommendation</strong>
+      <p>Restrict SSH access to trusted IP addresses or use a Bastion Host.</p>
+      <strong>Remediation Steps</strong><ul><li>Identify the security group rule allowing 0.0.0.0/0 on port 22.</li><li>Restrict the source to known/trusted IP ranges or a VPN CIDR.</li><li>Consider routing SSH access through a Bastion Host or Session Manager instead.</li></ul>
+    </div>
+  </div>
+
+  <div class="finding">
+    <div class="finding-header" style="background:#C00000;">
+      <span>Finding #3 &middot; IAM</span>
+      <span>CRITICAL &middot; Risk 90</span>
+    </div>
+    <div class="finding-body">
+      <table>
+        <tr><td class="label">Resource</td><td>user/dev-arjun</td></tr>
+        <tr><td class="label">Issue</td><td>User has AdministratorAccess policy</td></tr>
+        <tr><td class="label">Status</td><td>Open</td></tr>
+      </table>
+      <strong>Recommendation</strong>
+      <p>Apply the Principle of Least Privilege. Replace AdministratorAccess with a custom policy containing only required permissions.</p>
+      <strong>Remediation Steps</strong><ul><li>Identify the actual permissions the user/role needs from CloudTrail activity.</li><li>Create a custom-scoped IAM policy covering only those permissions.</li><li>Detach AdministratorAccess and attach the custom policy.</li><li>Re-test the workflow to confirm nothing breaks.</li></ul>
+    </div>
+  </div>
+
+  <div class="finding">
+    <div class="finding-header" style="background:#E36C09;">
+      <span>Finding #4 &middot; IAM</span>
+      <span>HIGH &middot; Risk 70</span>
+    </div>
+    <div class="finding-body">
+      <table>
+        <tr><td class="label">Resource</td><td>user/dev-priya</td></tr>
+        <tr><td class="label">Issue</td><td>MFA not enabled</td></tr>
+        <tr><td class="label">Status</td><td>Open</td></tr>
+      </table>
+      <strong>Recommendation</strong>
+      <p>Enable Multi-Factor Authentication (MFA) for all privileged users.</p>
+      <strong>Remediation Steps</strong><ul><li>Identify all IAM users without MFA enabled.</li><li>Enroll each user in virtual or hardware MFA.</li><li>Enforce MFA via IAM policy conditions for sensitive actions.</li></ul>
+    </div>
+  </div>
+
+  <div class="finding">
+    <div class="finding-header" style="background:#BF8F00;">
+      <span>Finding #5 &middot; S3</span>
+      <span>MEDIUM &middot; Risk 40</span>
+    </div>
+    <div class="finding-body">
+      <table>
+        <tr><td class="label">Resource</td><td>logs-bucket-2026</td></tr>
+        <tr><td class="label">Issue</td><td>Versioning disabled</td></tr>
+        <tr><td class="label">Status</td><td>Open</td></tr>
+      </table>
+      <strong>Recommendation</strong>
+      <p>Enable versioning to protect against accidental deletion and ransomware.</p>
+      <strong>Remediation Steps</strong><ul><li>Enable versioning on the bucket.</li><li>Configure lifecycle rules to manage old versions and storage cost.</li><li>Consider enabling MFA Delete for critical buckets.</li></ul>
+    </div>
+  </div>
+
+  <div class="finding">
+    <div class="finding-header" style="background:#BF8F00;">
+      <span>Finding #6 &middot; EC2</span>
+      <span>MEDIUM &middot; Risk 35</span>
+    </div>
+    <div class="finding-body">
+      <table>
+        <tr><td class="label">Resource</td><td>i-0a1b2c3d4e5f</td></tr>
+        <tr><td class="label">Issue</td><td>IMDSv1 enabled</td></tr>
+        <tr><td class="label">Status</td><td>Open</td></tr>
+      </table>
+      <strong>Recommendation</strong>
+      <p>Upgrade to Instance Metadata Service Version 2 (IMDSv2).</p>
+      <strong>Remediation Steps</strong><ul><li>Set the instance metadata options to require IMDSv2 (HttpTokens=required).</li><li>Update any application code/SDKs that assume IMDSv1 behavior.</li><li>Apply the setting account-wide for new instances via launch templates.</li></ul>
+    </div>
+  </div>
+
+  <div class="finding">
+    <div class="finding-header" style="background:#375623;">
+      <span>Finding #7 &middot; IAM</span>
+      <span>LOW &middot; Risk 20</span>
+    </div>
+    <div class="finding-body">
+      <table>
+        <tr><td class="label">Resource</td><td>user/contractor-temp</td></tr>
+        <tr><td class="label">Issue</td><td>Some brand new issue not in the knowledge base yet</td></tr>
+        <tr><td class="label">Status</td><td>Open</td></tr>
+      </table>
+      <strong>Recommendation</strong>
+      <p>No automated recommendation found for this misconfiguration. Flag for manual security review.</p>
+      <p class="not-found">No matching entry in the remediation knowledge base yet - flagged for manual review.</p>
+    </div>
+  </div>
+
+
+  <div class="footer">END OF REPORT</div>
+</div>
+</body>
+</html>

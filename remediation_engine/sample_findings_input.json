@@ -1,0 +1,80 @@
+{
+  "scan_information": {
+    "scan_id": "SCAN-001",
+    "scan_date": "2026-07-02T14:30:00Z",
+    "aws_account_id": "123456789012",
+    "region": "ap-south-1"
+  },
+  "summary": {
+    "critical": 2,
+    "high": 3,
+    "medium": 2,
+    "low": 0,
+    "total_findings": 7
+  },
+  "findings": [
+    {
+      "id": "F001",
+      "service": "S3",
+      "resource": "company-backup-bucket",
+      "misconfiguration": "Public Bucket",
+      "severity": "Critical",
+      "risk_score": 95,
+      "status": "Open"
+    },
+    {
+      "id": "F002",
+      "service": "EC2",
+      "resource": "SecurityGroup-WebServer",
+      "misconfiguration": "Security Group allows SSH (22) from 0.0.0.0/0",
+      "severity": "High",
+      "risk_score": 82,
+      "status": "Open"
+    },
+    {
+      "id": "F003",
+      "service": "IAM",
+      "resource": "user/dev-arjun",
+      "misconfiguration": "User has AdministratorAccess policy",
+      "severity": "Critical",
+      "risk_score": 90,
+      "status": "Open"
+    },
+    {
+      "id": "F004",
+      "service": "IAM",
+      "resource": "user/dev-priya",
+      "misconfiguration": "MFA not enabled",
+      "severity": "High",
+      "risk_score": 70,
+      "status": "Open"
+    },
+    {
+      "id": "F005",
+      "service": "S3",
+      "resource": "logs-bucket-2026",
+      "misconfiguration": "Versioning disabled",
+      "severity": "Medium",
+      "risk_score": 40,
+      "status": "Open"
+    },
+    {
+      "id": "F006",
+      "service": "EC2",
+      "resource": "i-0a1b2c3d4e5f",
+      "misconfiguration": "IMDSv1 enabled",
+      "severity": "Medium",
+      "risk_score": 35,
+      "status": "Open"
+    },
+    {
+      "id": "F007",
+      "service": "IAM",
+      "resource": "user/contractor-temp",
+      "misconfiguration": "Some brand new issue not in the knowledge base yet",
+      "severity": "Low",
+      "risk_score": 20,
+      "status": "Open"
+    }
+  ]
+}
